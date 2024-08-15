@@ -6,13 +6,13 @@ metadata:
   labels:
     app: mongodb
 spec:
-  ports:
-    - port: 27017
-      name: mongodb
   clusterIP: None
   selector:
     name: mongodb
     tier: db
+  ports:
+    - port: 27017
+      name: mongodb
 ---
 apiVersion: apps/v1
 kind: StatefulSet
