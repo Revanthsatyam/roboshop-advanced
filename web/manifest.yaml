@@ -106,7 +106,14 @@ spec:
       containers:
         - name: web
           imagePullPolicy: Always
-          image: revanthsatyam/web:k8
+          image: techworldwithsiva/web:k8
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "156Mi"
+            limits:
+              cpu: "150m"
+              memory: "256Mi"
           ports:
             - containerPort: 80
           volumeMounts:
@@ -135,3 +142,17 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 80
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: web-hpa
+  namespace: roboshop
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: web
+  minReplicas: 1
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 50
